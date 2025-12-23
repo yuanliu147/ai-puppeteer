@@ -48,6 +48,8 @@ export class PuppeteerWindowManager {
       this.window.webContents.setZoomFactor(ZOOM_FACTOR);
       this.window.moveTop();
     })
+
+    this.window.webContents.openDevTools({ mode: 'detach' });
   }
 
   openUrl(url: string) {
