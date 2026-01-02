@@ -1,4 +1,5 @@
 import { BrowserWindow } from 'electron';
+import path from 'node:path';
 
 const ZOOM_FACTOR = 0.5;
 
@@ -36,6 +37,9 @@ export class PuppeteerWindowManager {
       parent: mainWindow,
       webPreferences: {
         zoomFactor: ZOOM_FACTOR,
+        // contextIsolation: false,
+        // nodeIntegration: true,
+        preload: path.join(__dirname, './preload_puppeteer.js'),
       }
     });
 
@@ -59,5 +63,13 @@ export class PuppeteerWindowManager {
   updateWindowBounds(bounds: { x: number, y: number, width: number, height: number }) {
     const { x, y, width, height } = bounds;
     this.window.setBounds({ x: x + 660, y: y + 80, width: width - 680, height: height - 100 });
+  }
+
+  async sendCommand(command: string, ...args: any[]) {
+    const isAttached = this.window.webContents.debugger.isAttached();
+    if (!isAttached) {
+      this.window.webContents.debugger.attach('1.3');
+    }
+    return this.window.webContents.send(command, ...args);
   }
 }

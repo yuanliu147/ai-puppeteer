@@ -11,6 +11,9 @@
     "baseUrl": ".",
     "outDir": "dist",
     "moduleResolution": "nodenext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   }
 }
